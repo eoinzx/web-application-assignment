@@ -1,12 +1,12 @@
 //the user type
 export interface UserType 
 {
-    _id: string;
-    job_id: string;
+    id: string;
     username: string;
     email: string;
     password: string;
     phone: string;
+    job_id: string;
     image_path: string | undefined;
 }
 

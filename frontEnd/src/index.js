@@ -1,4 +1,5 @@
 //imports
+import React from 'react';
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
@@ -8,10 +9,14 @@ import App from './App';
 import RegistorForm from './pages/Registor';
 import LoginForm from './pages/Login';
 import HomePage from './pages/Home';
+import AccountPage from './pages/Account';
+import AccountEditPage from './pages/AccoEdit'
+import UsersPage from './pages/Users';
+import UserPage from './pages/User';
 import Assetspage from './pages/Asset';
 
 const router = createBrowserRouter([
-  //start page
+    //start page
   {    path: "/",    element: <App/>,  },
   
   //registor page
@@ -22,6 +27,18 @@ const router = createBrowserRouter([
 
   //home page
   {    path: "/home",    element: <HomePage/>  },
+
+   //users page
+  {    path: "/users",    element: <UsersPage/>  },
+
+  //users page
+  {    path: "/users/:id",    element: <UserPage/>  },
+
+   //account page
+  {    path: "/account",    element: <AccountPage/>  },
+
+    //account page
+  {    path: "/accoEdit",    element: <AccountEditPage/>  },
     
   //user page
   {    path: "/assets",    element: <Assetspage/>  },

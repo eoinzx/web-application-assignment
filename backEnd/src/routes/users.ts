@@ -2,20 +2,21 @@ import { Router } from "express";
 import { v4 as uuidv4 } from "uuid";
 import { openDb } from "../db";
 
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' })
 const router = Router();
+const jwt = require('jsonwebtoken');
 
 // GET all users
-// localhost:3000/v1/users
+// localhost:3020/users
 router.get("/", async (req, res) => {
     const db = await openDb();
     const users = await db.all("SELECT * FROM users");
     res.json({ value: users });
 });
 
-// Create a new student
-router.post("/", async (req, res) => {
-    console.log(req)
-    console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
+// Create a new user
+router.post("/", upload.none(),async (req, res) => {
     const { username, phone, password, email, job_id } = req.body;
     const id = uuidv4();
     const db = await openDb();
@@ -27,8 +28,8 @@ router.post("/", async (req, res) => {
     res.status(201).json(newUser);
 });
 
-// Update a Student Record
-router.put("/:id", async (req, res) => {
+// Update a User Record
+router.put("/:id", upload.none(),async (req, res) => {
     const { username, phone, password, email, job_id } = req.body;
     const db = await openDb();
     await db.run(
@@ -39,19 +40,44 @@ router.put("/:id", async (req, res) => {
     res.json(updatedStudent);
 });
 
-// Delete a Student 
+// Delete a User 
 router.delete("/:id", async (req, res) => {
     const db = await openDb();
     await db.run("DELETE FROM users WHERE id=?", req.params.id);
     res.status(204).send();
 });
 
-// GET Individual Student
+// GET Individual User
 router.get("/:id", async (req, res) => {
     const db = await openDb();
-    const student = await db.get("SELECT * FROM users WHERE id = ?", req.params.id);
-    if (!student) return res.status(404).json({ message: "Student not found" });
-    res.json(student);
+    const user = await db.get("SELECT * FROM users WHERE id = ?", req.params.id);
+    if (!user) return res.status(404).json({ message: "User not found" });
+    res.json(user);
+});
+
+// Login user
+router.post("/login", upload.none(),async (req, res) => {
+    const { email, password } = req.body;
+    const db = await openDb();
+    const user = await db.get("SELECT * FROM users WHERE email = ?", email);
+
+    if (user != null && user != undefined && user.password === password)
+    {     
+        res.status(201).json({
+            _id: user.id,
+            email: user.email,
+            token: jwt.sign(
+            {
+                email: user.email,
+                username: user.username,
+                _id: user.id
+            }, "p0rt")
+       });
+    }
+    else
+    {
+        res.status(400).json("Invalid credentials");
+    }
 });
 
 /**
@@ -69,7 +95,7 @@ router.get("/:id", async (req, res) => {
  * @swagger
  * /v1/users/{id}:
  *   get:
- *     summary: Get a student by ID
+ *     summary: Get a user by ID
  *     tags: [Students]
  *     parameters:
  *       - in: path
@@ -77,19 +103,19 @@ router.get("/:id", async (req, res) => {
  *         required: true
  *         schema:
  *           type: string
- *         description: The student ID
+ *         description: The user ID
  *     responses:
  *       200:
- *         description: Student found
+ *         description: User found
  *       404:
- *         description: Student not found
+ *         description: User not found
  */
 
 /**
  * @swagger
  * /v1/users:
  *   post:
- *     summary: Create a new student
+ *     summary: Create a new user
  *     tags: [Students]
  *     requestBody:
  *       required: true
@@ -116,14 +142,14 @@ router.get("/:id", async (req, res) => {
  *                 type: string
  *     responses:
  *       201:
- *         description: Student created
+ *         description: User created
  */
 
 /**
  * @swagger
  * /v1/users/{id}:
  *   put:
- *     summary: Update a student by ID
+ *     summary: Update a user by ID
  *     tags: [Students]
  *     parameters:
  *       - in: path
@@ -131,7 +157,7 @@ router.get("/:id", async (req, res) => {
  *         required: true
  *         schema:
  *           type: string
- *         description: The student ID
+ *         description: The user ID
  *     requestBody:
  *       required: true
  *       content:
@@ -151,16 +177,16 @@ router.get("/:id", async (req, res) => {
  *                 type: string
  *     responses:
  *       200:
- *         description: Student updated
+ *         description: User updated
  *       404:
- *         description: Student not found
+ *         description: User not found
  */
 
 /**
  * @swagger
  * /v1/users/{id}:
  *   delete:
- *     summary: Delete a student by ID
+ *     summary: Delete a user by ID
  *     tags: [Students]
  *     parameters:
  *       - in: path
@@ -168,12 +194,12 @@ router.get("/:id", async (req, res) => {
  *         required: true
  *         schema:
  *           type: string
- *         description: The student ID
+ *         description: The user ID
  *     responses:
  *       204:
- *         description: Student deleted
+ *         description: User deleted
  *       404:
- *         description: Student not found
+ *         description: User not found
  */
 
 

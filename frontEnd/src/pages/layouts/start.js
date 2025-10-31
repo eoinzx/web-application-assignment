@@ -1,6 +1,6 @@
 //imports
-import UserContext  from "../contexts/userContext.js";
-import UserContextProvider from "../contexts/userContextProvider.tsx";
+import UserContext  from "../../contexts/userContext.js";
+import UserContextProvider from "../../contexts/userContextProvider.tsx";
 import { useContext } from "react";
 
 //the start page
