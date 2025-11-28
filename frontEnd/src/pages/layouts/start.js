@@ -12,7 +12,7 @@ export default function StartForm()
     //signs the user out
     const handlePress = () =>
     {  
-        signOut();
+        signOut(); 
     }
 
     //checks if the user is logged in and displays the start page
@@ -94,7 +94,7 @@ export default function StartForm()
                                 </svg>
 
                                 <p className='my-0 d-none d-md-block'>
-                                    REGISTER
+                                    Register
                                 </p>
                             </div>
                         </a>

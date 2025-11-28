@@ -1,6 +1,5 @@
 import SessionProvider from '../contexts/userContextProvider.tsx'
-import Top from './comp/headerComp.js'
-import Bottom from './comp/footerComp.js'
+import { Header, Footer } from "../hooks/compents.js";
 import img from '../hooks/userPlaceholder.png';
 
 //the account page
@@ -8,7 +7,7 @@ export default function Assetspage()
 {
     return(
         <SessionProvider>
-            <Top/>
+            {Header()}
             <h1 className='align-items-center text-center m-5'>UI assets</h1>
 
             <div className='my-5'>
@@ -122,7 +121,7 @@ export default function Assetspage()
                     </div>
                 </div>
             </div>
-            <Bottom/>
+            {Footer()}
         </SessionProvider>
     )
 }

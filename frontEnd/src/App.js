@@ -4,7 +4,6 @@
 //imports
 import SessionProvider from './contexts/userContextProvider.tsx'
 import StartForm from './pages/layouts/start.js';
-import React from "react"
 import './css/main.css';
 
 //the app

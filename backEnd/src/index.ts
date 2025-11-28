@@ -2,6 +2,11 @@ import express from "express";
 import bodyParser from "body-parser";
 import { initDb } from "./db";
 import usersRouter from "./routes/users";
+import jobsRouter from "./routes/jobs";
+import timetablesRouter from "./routes/timetables";
+import userTimetablesRouter from "./routes/userTimetable";
+import boatsRouter from "./routes/boats";
+import containersRouter from "./routes/containers"; 
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import cors from "cors";
@@ -38,6 +43,12 @@ app.get("/", (req, res) => {
 
 // Routes
 app.use("/users", usersRouter);
+app.use("/jobs", jobsRouter);
+app.use("/timetables", timetablesRouter);
+app.use("/userTimetables", userTimetablesRouter);
+app.use("/boats", boatsRouter);
+app.use("/containers", containersRouter);
+
 
 
 initDb().then(() => {

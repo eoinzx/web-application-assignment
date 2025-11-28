@@ -1,17 +1,16 @@
 //imports
 import SessionProvider from '../contexts/userContextProvider.tsx'
-import Top from './comp/headerComp.js'
 import UsersLayout from './layouts/users.js'
-import Bottom from './comp/footerComp.js'
+import { Header, Footer } from "../hooks/compents.js";
 
 //the users page
 export default function UsersPage()
 {
     return(
         <SessionProvider>
-            <Top/>
+            {Header()}
             <UsersLayout/>
-            <Bottom/>
+            {Footer()}
         </SessionProvider>
     )
 }

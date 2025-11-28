@@ -29,11 +29,10 @@ export default function usePost(){
          axios.put(url, foDa, headers)
              .then(response => {
                 setData(response.data);
-                //onSuccess(response.data);
-                console.log(response.data)
+                onSuccess(response.data);
              })
              .catch(e => {
-                setError(e.response.data.message);
+                setError(e.response.data);
              })
              .finally(() => {
                 setLoading(false);
@@ -62,12 +61,15 @@ export default function usePost(){
       axios.post(url, foDa, headers)
          .then(response => {
             setData(response.data);
-            //onSuccess(response.data);
+            onSuccess(response.data);
             console.log(response.data)
          })
          .catch(e => {
-            console.log(url)
-            setError(e.response.data.message);
+            if (e && e.response && e.response.data)
+            {
+               console.log(e.response.data)
+               setError(e.response.data);
+            }
          })
          .finally(() => {
             setLoading(false);

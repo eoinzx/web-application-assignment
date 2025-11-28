@@ -9,14 +9,15 @@ import { useEffect, useState, useContext } from 'react';
 //account pages function
 export default function UseLayout() {
   //sets up variables
-  const { postRequest, putRequest, loading, error } = useAPI();
+  const { loading, error } = useAPI();
   const [user, setUser] = useState([]);
   const { session, id, signOut } = useContext(UserContext);
   const [errors, setError] = useState("");
-  
+
   //grabs user from database
   useEffect(() => {
-      let users = []
+    if (id !== null && (user[0] === null || user[0] === undefined))
+    {
       axios.get(`http://localhost:3020/users/${id}`,
       {
         headers: {
@@ -24,29 +25,16 @@ export default function UseLayout() {
         }
       })
       .then(response => {
-        users[0] = response.data
+        setUser(response.data)
       })
       .catch(e => {
         console.log(e);
-      });
-
-      axios.get(`http://localhost:3020/users/${id}`,
-      {
-        headers: {
-          Authorization: `Bearer ${session}`
-        }
-      })
-      .then(response => {
-        users[1] = response.data
-        setUser(users)
-      })
-      .catch(e => {
-        console.log(e);
+        setError(e);
       });
     }
-  );
+  });
 
-   function warn() 
+  function warn() 
   {
     if (window.confirm("Are you sure you want to DELETE your account")) 
     {
@@ -69,7 +57,7 @@ export default function UseLayout() {
   }
 
   //checks for user
-  if (user[0] == null || loading)
+  if (user == null || loading)
   {
     return (
       <div className="align-items-center text-center">
@@ -84,9 +72,9 @@ export default function UseLayout() {
   //sets up image
   let image;
 
-  if (user[0].image_path && user[0].image_path !== null && user[0].image_path !== undefined)
+  if (user.image_path && user.image_path !== null && user.image_path !== undefined)
   {
-    image = user[0].image_path;
+    image = user.image_path;
   }
   else
   {
@@ -101,21 +89,22 @@ export default function UseLayout() {
   //displays the users account
   return (
     <UserContextProvider>    
-      <div className="align-items-center text-center">              
-        <div className="col-sm-12 col-md-4 align-items-center text-center">
+      <div className="align-items-center text-center">       
+        <div className="align-items-center text-center">
           <div className="card-body align-items-center text-center">
             <img className='rounded-5 border border-4 border-dark bigImg' src={image} alt="This users account"/>
-            <h4 className='align-items-center text-center my-3'>{user[0].username}</h4>
-            <p className='align-items-center text-center notHov'>{user[0].email}</p>
-            <p className='align-items-center text-center notHov'>{user[0].phone}</p>
+            <h4 className='align-items-center text-center my-3'>{user.username}</h4>
+            <p className='align-items-center text-center notHov'>{user.email}</p>
+            <p className='align-items-center text-center notHov'>{user.phone}</p>
 
             <h3 className='align-items-center text-center my-3 redText'>{error}</h3>
             <h3 className='align-items-center text-center my-3 redText'>{errors}</h3>
 
-             <div className="align-items-center text-center d-flex flex-row">
-            <div className="align-items-center text-center flex-fill butHov p-0 ms-1">
+          <div className="align-items-center text-center d-flex flex-row">
+            <div className="align-items-center text-center col-sm-12 col-md-3"/>
+            <div className="align-items-center text-center flex-fill butHov p-0 ms-1 col-sm-12 col-md-3">
               <button className="align-items-center text-center w-100 rounded-1 border border-4 border-dark" data-toggle="tooltip" title="Edit your account details">
-                <a href="../accoEdit">
+                <a href={`../accoEdit/${id}`}>
                   <div className='fw-bolder d-flex flex-row justify-content-center py-3'>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" className="bi bi-pencil-square me-3 d-md-none d-lg-block" viewBox="0 0 16 16">
                       <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
@@ -130,7 +119,7 @@ export default function UseLayout() {
               </button>
             </div> 
 
-            <div className="align-items-center text-center flex-fill butHov p-0 ms-1">
+            <div className="align-items-center text-center flex-fill butHov p-0 ms-1 col-sm-12 col-md-3">
               <button className="align-items-center text-center w-100 rounded-1 border border-4 border-dark" data-toggle="tooltip" title="Delete your account" onClick={warn}>
                   <div className='fw-bolder d-flex flex-row justify-content-center py-3'>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" className="bi bi-0-circle-fill me-3 d-md-none d-lg-block" viewBox="0 0 16 16">
@@ -143,6 +132,7 @@ export default function UseLayout() {
                   </div>
               </button>
             </div> 
+            <div className="align-items-center text-center col-sm-12 col-md-3"/>
           </div>
           </div>     
       </div>    

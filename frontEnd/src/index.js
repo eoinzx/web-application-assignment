@@ -1,5 +1,4 @@
 //imports
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
@@ -9,8 +8,20 @@ import App from './App';
 import RegistorForm from './pages/Registor';
 import LoginForm from './pages/Login';
 import HomePage from './pages/Home';
+import TimeCrePage from './pages/TimeCreate';
+import TimeEditPage from './pages/TimeEdit';
+import PortPage from './pages/Port';
+import PortCrePage from './pages/PortCreate';
+import PortEditPage from './pages/PortEdit';
+import ContPage from './pages/Container';
+import ContCrePage from './pages/ContainerCreate';
+import ContEditPage from './pages/ContainerEdit';
 import AccountPage from './pages/Account';
-import AccountEditPage from './pages/AccoEdit'
+import AccountEditPage from './pages/AccoEdit';
+import JobsPage from './pages/Jobs';
+import JobPage from './pages/Job';
+import JobCrePage from './pages/JobCreate';
+import JobEditPage from './pages/JobEdit';
 import UsersPage from './pages/Users';
 import UserPage from './pages/User';
 import Assetspage from './pages/Asset';
@@ -28,6 +39,42 @@ const router = createBrowserRouter([
   //home page
   {    path: "/home",    element: <HomePage/>  },
 
+  //timeCreate page
+  {    path: "/timeCreate",    element: <TimeCrePage/>  },
+
+  //timeEdit page
+  {    path: "/timeEdit/:id",    element: <TimeEditPage/>  },
+
+  //port page
+  {    path: "/ports",    element: <PortPage/>  },
+
+  //portCreate page
+  {    path: "/portCreate",    element: <PortCrePage/>  },
+
+  //portEdit page
+  {    path: "/portEdit/:id",    element: <PortEditPage/>  },
+
+  //container page
+  {    path: "/containers",    element: <ContPage/>  },
+
+  //containerCreate page
+  {    path: "/contCreate",    element: <ContCrePage/>  },
+
+  //containerEdit page
+  {    path: "/contEdit/:id",    element: <ContEditPage/>  },
+
+   //jobs page
+  {    path: "/jobs",    element: <JobsPage/>  },
+
+  //jobs page
+  {    path: "/jobs/:id",    element: <JobPage/>  },
+
+  //jobCreate page
+  {    path: "/jobCreate",    element: <JobCrePage/>  },
+
+  //jobEdit page
+  {    path: "/jobEdit/:id",    element: <JobEditPage/>  },
+
    //users page
   {    path: "/users",    element: <UsersPage/>  },
 
@@ -38,7 +85,7 @@ const router = createBrowserRouter([
   {    path: "/account",    element: <AccountPage/>  },
 
     //account page
-  {    path: "/accoEdit",    element: <AccountEditPage/>  },
+  {    path: "/accoEdit/:id",    element: <AccountEditPage/>  },
     
   //user page
   {    path: "/assets",    element: <Assetspage/>  },

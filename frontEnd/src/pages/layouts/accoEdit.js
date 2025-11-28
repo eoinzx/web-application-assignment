@@ -10,13 +10,14 @@ export default function AccoEdit() {
     //sets up the variables
     const [user, setUser] = useState(null);
     const { session, id } = useContext(UserContext); 
+    var _id = window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1);
 
     //grabs the users acount data
     useEffect(() => 
     { 
-        if (id != null)
+        if (_id != null)
         {
-            axios.get(`http://localhost:3020/users/${id}`, {
+            axios.get(`http://localhost:3020/users/${_id}`, {
             headers: 
             {
                 Authorization: `Bearer ${session}`
@@ -30,7 +31,7 @@ export default function AccoEdit() {
              });
         }
     
-    }, [session, id]);
+    });
     
     //sets up form data
     const [form, setForm] = useState({
@@ -131,7 +132,10 @@ export default function AccoEdit() {
 
         if (error === null)
         {
-            window.location.href = '/account';
+            setTimeout(function()
+            {
+                window.location.href = '/account';
+            }, 1500); 
         }
     }
 

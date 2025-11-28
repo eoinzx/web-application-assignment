@@ -15,10 +15,12 @@ function Registor()
         email: "",
         password: "",
         phone: "",
+        job_id: "b1def19d-08ea-432d-a0a3-3f4f26007cce",
         file: null
     })
 
     const {signIn} = useContext(UserContext);
+    var errors = "";
 
     //updates the forms variables
     const handleChange = (e) =>//: any) => 
@@ -49,12 +51,15 @@ function Registor()
             headers: {
                 "Content_type":"Mulipart/form-data",
             }
-        });
+        })
 
         setTimeout(function()
         {
-            autoLogin()
-        }, 1500); 
+            if ((error === undefined || error === null) && errors.length === 0)
+            {
+                autoLogin()
+            }
+        }, 500); 
     }
 
     //logs the new user in
@@ -66,9 +71,13 @@ function Registor()
             password: form.password
         })
         .then(response =>
-        {
+        {            
             signIn(response.data);
-        })
+        }) 
+        .catch(e => {
+            console.log(e);
+            errors = e.response.data.message;
+        });
     }
 
     if (loading) return <h1>Loading</h1>
@@ -93,15 +102,12 @@ function Registor()
             <input type="text" className="align-items-center text-center rounded-1 border border-4 border-dark px-5 py-3 w-100 maxLen" placeholder="Phone" value={form.phone} onChange={handleChange} id='phone'/>
             <p className="align-items-center text-center notHov">The users phone number</p>
 
-            <h6 className='align-items-center text-center mt-4 mb-0'>Job_id</h6>
-            <input type="text" className="align-items-center text-center rounded-1 border border-4 border-dark px-5 py-3 w-100 maxLen" placeholder="Job_id" value={form.job_id} onChange={handleChange} id='job_id'/>
-            <p className="align-items-center text-center notHov">The users job id</p>
-
             <h6 className='align-items-center text-center mt-4 mb-0'>Image</h6>
             <input type="file" className="max-logo" placeholder="Image path" onChange={handleChange} id='file' name='file'/>
             <p className="align-items-center text-center notHov">OPTIONAL, image must be a jpg, jpeg, png or a gif</p>
 
             <h3 className='align-items-center text-center my-3 redText'>{error}</h3>
+            <h3 className='align-items-center text-center my-3 redText'>{errors}</h3>
 
             <div className="align-items-center text-center flex-fill butHov p-0 ms-1 my-3">
                 <button className="align-items-center text-center w-100 rounded-1 border border-4 border-dark" data-toggle="tooltip" title="Make account" onClick={handlePress}>
